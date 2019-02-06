@@ -53,8 +53,8 @@ class Board():
 def minConflicts(csp, maxSteps):
     print("minConflits not yet implemented")
 
-## Should read in "nqueens.txt" and fill problems[].
-def inputFile(fileName, problems):
+## Should read in "nqueens.txt" and return list of problems to solve
+def inputFile(fileName):
     print("inputFile not yet implemented")
 
 ## Outputs found solutions to "nqueens_out.txt"
@@ -73,7 +73,7 @@ problems = []
 ##      a matrix of positons as shown in assignment
 solutions = []
 
-inputFile("nqueens.txt", problems)
+problems = inputFile("nqueens.txt")
 
 for i in problems:
     solutions.append(runAlgorithm(n))
