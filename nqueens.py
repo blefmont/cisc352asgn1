@@ -65,6 +65,7 @@ def runAlgorithm(n):
     csp = Board(n)
     solution = None
     while(solution == None):
+        csp.randomizeQueens()
         solution = minConflicts(csp, 75)
 
 ## problems is the list of n size solutions we must find
