@@ -39,7 +39,6 @@ class Board():
         ## List of queens that currently have at least one conflict
         self.conflits = []
         self.createBoard(n)
-        print("Board init not fully implemented")
     ## Go through and initialize self.board to size n with all 0.
     def createBoard(self, n):
         for i in range(n):
@@ -49,7 +48,11 @@ class Board():
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
     def randomizeQueens(self):
-        pass
+        for i in range(len(self.queens)):
+            self.queens[i].x = i
+            self.queens[i].y = random.randint(0,self.n-1)
+            self.board[i][self.queens[i].y] = self.queens[i]
+        
     ## Go through the list of queens, checking
     ##      how many conflits there are. Should
     ##      also update self.conflits
