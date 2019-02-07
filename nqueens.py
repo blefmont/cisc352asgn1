@@ -63,7 +63,9 @@ def minConflicts(csp, maxSteps):
 
 ## Should read in "nqueens.txt" and return list of problems to solve
 def inputFile(fileName):
-    print("inputFile not yet implemented")
+    with open(fileName) as f:
+        content = f.readlines()
+    return [int(x.strip()) for x in content] 
 
 ## Outputs found solutions to "nqueens_out.txt"
 def outputFile(fileName, solutions):
@@ -83,9 +85,7 @@ problems = []
 solutions = []
 
 problems = inputFile("nqueens.txt")
-
-for i in problems:
-    solutions.append(runAlgorithm(i))
-    
+#for i in problems:
+    #solutions.append(runAlgorithm(i))
 outputFile("nqueens_output.txt", solutions)
 
