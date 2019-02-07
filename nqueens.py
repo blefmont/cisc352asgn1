@@ -62,7 +62,20 @@ class Board():
 ## Main min conflits algoritm, see assignment for algorithm.
 ##      return solution, or None if no solution is found.
 def minConflicts(csp, maxSteps):
-    print("minConflits not yet implemented")
+    for i in range(maxSteps):
+        if (csp.checkSolution):
+            return convertBoard(csp)
+        var = csp.conflicts[random.randint(0, len(csp.conflits)-1)]
+        value = findLeastConflits(var)
+        var.y = value
+    return None
+
+## Should convert an instance of Board to a list of queen positions
+## ex. return [2,0,1,4]
+def convertBoard(board):
+    pass
+def findLeastConflits(queen):
+    pass
 
 ## Should read in "nqueens.txt" and return list of problems to solve
 def inputFile(fileName):
@@ -88,7 +101,7 @@ problems = []
 solutions = []
 
 problems = inputFile("nqueens.txt")
-#for i in problems:
-    #solutions.append(runAlgorithm(i))
+for i in problems:
+    solutions.append(runAlgorithm(i))
 outputFile("nqueens_output.txt", solutions)
 
