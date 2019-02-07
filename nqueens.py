@@ -11,7 +11,7 @@ import random
 ## An instance of this class is one queen. Attributes that a
 ##  queen has are positon (x,y) and number of conflits
 class Queen():
-    def __init__(self, x, y):
+    def __init__(self, x = 0, y = 0):
         self.x = x
         self.y = y
         self.conflits = 0
@@ -29,15 +29,23 @@ class Board():
     def __init__(self, n):
         self.n = n
         ## 2D matrix of 0 if no queen and instance in queen's position
-        self.board = [[]]
+        self.board = []
         ## List of queen instances.
         self.queens = []
+        
+        for i in range(n):
+            self.queens.append(Queen())
+        
         ## List of queens that currently have at least one conflict
         self.conflits = []
+        self.createBoard(n)
         print("Board init not fully implemented")
     ## Go through and initialize self.board to size n with all 0.
     def createBoard(self, n):
-        pass
+        for i in range(n):
+            self.board.append([])
+            for j in range(n):
+                self.board[i].append(0)
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
     def randomizeQueens(self):
@@ -77,7 +85,7 @@ solutions = []
 problems = inputFile("nqueens.txt")
 
 for i in problems:
-    solutions.append(runAlgorithm(n))
+    solutions.append(runAlgorithm(i))
     
 outputFile("nqueens_output.txt", solutions)
 
