@@ -75,7 +75,6 @@ class Board():
         ## List of queens that currently have at least one conflict
         self.conflits = []
         self.createBoard(n)
-        print("Board init not fully implemented")
     ## Go through and initialize self.board to size n with all 0.
     def createBoard(self, n):
         for i in range(n):
@@ -85,7 +84,11 @@ class Board():
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
     def randomizeQueens(self):
-        pass
+        for i in range(len(self.queens)):
+            self.queens[i].x = i
+            self.queens[i].y = random.randint(0,self.n-1)
+            self.board[i][self.queens[i].y] = self.queens[i]
+        
     ## Go through the list of queens, checking
     ##      how many conflits there are. Should
     ##      also update self.conflits
@@ -95,7 +98,20 @@ class Board():
 ## Main min conflits algoritm, see assignment for algorithm.
 ##      return solution, or None if no solution is found.
 def minConflicts(csp, maxSteps):
-    print("minConflits not yet implemented")
+    for i in range(maxSteps):
+        if (csp.checkSolution):
+            return convertBoard(csp)
+        var = csp.conflicts[random.randint(0, len(csp.conflits)-1)]
+        value = findLeastConflits(var)
+        var.y = value
+    return None
+
+## Should convert an instance of Board to a list of queen positions
+## ex. return [2,0,1,4]
+def convertBoard(board):
+    pass
+def findLeastConflits(queen):
+    pass
 
 ## Should read in "nqueens.txt" and return list of problems to solve
 def inputFile(fileName):
