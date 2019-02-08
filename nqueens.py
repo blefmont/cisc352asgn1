@@ -4,7 +4,7 @@ Group 2
 Febuary 15th 2019
 Authors:
 Michael Olson    20008033
-
+Brandon Christof 20014247
 """
 import random
 
@@ -14,12 +14,48 @@ class Queen():
     def __init__(self, x = 0, y = 0):
         self.x = x
         self.y = y
-        self.conflits = 0
-    ## Use the board to check if the queen conflits
+        self.conflicts = 0
+    ## Use the board to check if the queen conflicts
     ##      with any others. Update number and either
-    ##      add or remove self to board.conflits
-    def checkConflits(self, board):
-        pass
+    ##      add or remove self to board.conflicts
+    def checkConflicts(self, board):
+        size = board.n
+        xPos = self.x
+        yPos = self.y
+        
+        for i in range(size):
+            if board[i][y] != 0 and i != xPos:
+                self.conflicts += 1
+                break
+
+        while xPos >= 0 and yPos >= 0:
+            xPos -= 1
+            yPos -= 1
+            if board[xPos][yPos] != 0:
+                self.conflicts += 1
+                break
+
+        while xPos >= 0 and yPos <= size:
+            xPos -= 1
+            yPos += 1
+            if board[xPos][yPos] != 0:
+                self.conflicts += 1
+                break
+
+        while xPos <= size and yPos >= 0:
+            xPos += 1
+            yPos -= 1
+            if board[xPos][yPos] != 0:
+                self.conflicts += 1
+                break
+            
+        while xPos <= size or yPos <= size:
+            xPos += 1
+            yPos += 1
+            if board[xPos][yPos] != 0:
+                self.conflicts += 1
+                break
+                
 
         
     
@@ -85,7 +121,7 @@ problems = []
 solutions = []
 
 problems = inputFile("nqueens.txt")
-#for i in problems:
-    #solutions.append(runAlgorithm(i))
+for i in problems:
+    solutions.append(runAlgorithm(i))
 outputFile("nqueens_output.txt", solutions)
 
