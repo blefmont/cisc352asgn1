@@ -18,8 +18,15 @@ class Queen():
     ## Use the board to check if the queen conflits
     ##      with any others. Update number and either
     ##      add or remove self to board.conflits
-    def checkConflits(self, board):
-        pass
+    def checkConflicts(self, board):
+        for i in range(self.x + 1, board.n):
+            if (board[i][self.y] != 0): self.conflits += 1
+            if (board[i][self.y + self.x - i] != 0): self.conflits += 1
+            if (board[i][self.y - self.x - i] != 0): self.conflits += 1
+            if (self.conflits != 0 and not board.conflicts.count(self)):
+                board.conflicts.append(self)
+            elif (self.conflicts == 0 and board.conflicts.count(self)):
+                board.conflits.remove(self)
 
         
     
@@ -37,7 +44,7 @@ class Board():
             self.queens.append(Queen())
         
         ## List of queens that currently have at least one conflict
-        self.conflits = []
+        self.conflicts = []
         self.createBoard(n)
     ## Go through and initialize self.board to size n with all 0.
     def createBoard(self, n):
@@ -57,8 +64,11 @@ class Board():
     ##      how many conflits there are. Should
     ##      also update self.conflits
     def checkSolution(self):
-        pass
-
+        for q in self.queens:
+            q.checksolution
+        if (self.conflits == []):
+            return True
+        else: return False
 ## Main min conflits algoritm, see assignment for algorithm.
 ##      return solution, or None if no solution is found.
 def minConflicts(csp, maxSteps):
@@ -66,16 +76,29 @@ def minConflicts(csp, maxSteps):
         if (csp.checkSolution):
             return convertBoard(csp)
         var = csp.conflicts[random.randint(0, len(csp.conflits)-1)]
-        value = findLeastConflits(var)
+        value = findLeastConflits(csp, var)
         var.y = value
     return None
 
 ## Should convert an instance of Board to a list of queen positions
 ## ex. return [2,0,1,4]
 def convertBoard(board):
-    pass
-def findLeastConflits(queen):
-    pass
+    positions = []
+    for i in board.queens:
+        positions.append(i.y)
+    return positions
+
+def findLeastConflits(csp, queen):
+    yPos = queen.y
+    numConflits = queen.conflicts
+    bestPos = 0
+    for i in range(csp.n):
+        queen.y = i
+        queen.checkConflicts(csp)
+        if (queen.conficts < numConflicts):
+            numConflicts = queen.conflicts
+            bestPos = i
+    return bestPos
 
 ## Should read in "nqueens.txt" and return list of problems to solve
 def inputFile(fileName):
@@ -85,7 +108,10 @@ def inputFile(fileName):
 
 ## Outputs found solutions to "nqueens_out.txt"
 def outputFile(fileName, solutions):
-    print("outputFile not yet implemented")
+    print (solutions)
+##    file = open(fileName, 'w')
+##    file.writelines(solutions)
+##    file.close()
 
 def runAlgorithm(n):
     csp = Board(n)
