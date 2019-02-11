@@ -9,29 +9,44 @@ Michael Olson    20008033
 import random
 
 ## An instance of this class is one queen. Attributes that a
-##  queen has are positon (x,y) and number of conflits
+##  queen has are positon (x,y) and number of conflicts
 class Queen():
     def __init__(self, x = 0, y = 0):
         self.x = x
         self.y = y
-        self.conflits = 0
-    ## Use the board to check if the queen conflits
+        self.conflicts = 0
+    ## Use the board to check if the queen conflicts
     ##      with any others. Update number and either
-    ##      add or remove self to board.conflits
+    ##      add or remove self to board.conflicts
     def checkConflicts(self, board):
         for i in range(self.x + 1, board.n):
-            if (board[i][self.y] != 0): self.conflits += 1
-            if (board[i][self.y + self.x - i] != 0): self.conflits += 1
-            if (board[i][self.y - self.x - i] != 0): self.conflits += 1
-            if (self.conflits != 0 and not board.conflicts.count(self)):
+            if (board.board[i][self.y] != 0): self.conflicts += 1
+            if (self.y + i - self.x < board.n):
+                
+                if (board.board[i][self.y + i - self.x] != 0): self.conflicts += 1
+            if (self.y - i - self.x >= 0):
+                
+                if (board.board[i][self.y - i - self.x] != 0): self.conflicts += 1
+            if (self.conflicts != 0 and not board.conflicts.count(self)):
                 board.conflicts.append(self)
             elif (self.conflicts == 0 and board.conflicts.count(self)):
-                board.conflits.remove(self)
-
-        
+                board.conflicts.remove(self)
+        for i in range(self.x - 1, 0, -1):
+            if (board.board[i][self.y] != 0): self.conflicts += 1
+            if (self.y + i - self.x < board.n):
+                
+                if (board.board[i][self.y + i - self.x] != 0): self.conflicts += 1
+            if (self.y - i - self.x >= 0):
+                
+                if (board.board[i][self.y - i - self.x] != 0): self.conflicts += 1
+            if (self.conflicts != 0 and not board.conflicts.count(self)):
+                board.conflicts.append(self)
+            elif (self.conflicts == 0 and board.conflicts.count(self)):
+                board.conflicts.remove(self)
+         
     
 ## This is the chess board. The chess board should manage
-##      the queens, and keep track of positons and conflits
+##      the queens, and keep track of positons and conflicts
 class Board():
     def __init__(self, n):
         self.n = n
@@ -61,22 +76,24 @@ class Board():
             self.board[i][self.queens[i].y] = self.queens[i]
         
     ## Go through the list of queens, checking
-    ##      how many conflits there are. Should
-    ##      also update self.conflits
+    ##      how many conflicts there are. Should
+    ##      also update self.conflicts
     def checkSolution(self):
         for q in self.queens:
-            q.checksolution
-        if (self.conflits == []):
+            q.checkConflicts(self)
+        if (self.conflicts == []):
             return True
         else: return False
-## Main min conflits algoritm, see assignment for algorithm.
+## Main min conflicts algoritm, see assignment for algorithm.
 ##      return solution, or None if no solution is found.
 def minConflicts(csp, maxSteps):
+    print ("start minconflicts")
     for i in range(maxSteps):
-        if (csp.checkSolution):
+        print (convertBoard(csp))
+        if (csp.checkSolution()):
             return convertBoard(csp)
-        var = csp.conflicts[random.randint(0, len(csp.conflits)-1)]
-        value = findLeastConflits(csp, var)
+        var = csp.conflicts[random.randint(0, len(csp.conflicts)-1)]
+        value = findLeastconflicts(csp, var)
         var.y = value
     return None
 
@@ -88,14 +105,14 @@ def convertBoard(board):
         positions.append(i.y)
     return positions
 
-def findLeastConflits(csp, queen):
+def findLeastconflicts(csp, queen):
     yPos = queen.y
-    numConflits = queen.conflicts
+    numConflicts = queen.conflicts
     bestPos = 0
     for i in range(csp.n):
         queen.y = i
         queen.checkConflicts(csp)
-        if (queen.conficts < numConflicts):
+        if (queen.conflicts < numConflicts):
             numConflicts = queen.conflicts
             bestPos = i
     return bestPos
@@ -116,7 +133,9 @@ def outputFile(fileName, solutions):
 def runAlgorithm(n):
     csp = Board(n)
     solution = None
+    i = 0 #### debug
     while(solution == None):
+        print (i) ### debug
         csp.randomizeQueens()
         solution = minConflicts(csp, 75)
 
