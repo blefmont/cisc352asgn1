@@ -1,9 +1,17 @@
 from nqueens import *
 
-def printBoard(csp):
+def pb(csp):
     for i in range(csp.n):
         for j in range(csp.n):
-            if (csp.queens[i].y != j):
+            if (csp.queens[j].y != i):
                 print("_", end = '\t')
-            else:  print(csp.queens[i].x, end = '\t')
+            else:  print(csp.queens[j].x, end = '\t')
         print("")
+def pc(csp):
+    print("Conflicts:")
+    for i in csp.queens:
+        print("Queen " + str(i.x) + ": " + str(i.conflicts))
+        
+c = Board(4)
+c.randomizeQueens()
+c.checkSolution()

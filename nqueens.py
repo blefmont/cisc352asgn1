@@ -19,23 +19,35 @@ class Queen():
     ##      with any others. Update number and either
     ##      add or remove self to board.conflicts
     def checkConflicts(self, board):
-        self.conflitcs = 0
-        for i in range(self.x + 1, board.n):
-            if (board.queens[i].y == y):
-                self.conflicts += 1
-            elif (board.queens[i].y == self.y + i - self.x):
-                self.conflicts += 1
-            elif (board.queens[i].y == self.y - i - self.x):
-                self.conflicts += 1
-
-        for i in range(self.x - 1, 0, -1):
-            if (board.queens[i].y == y):
-                self.conflicts += 1
-            elif (board.queens[i].y == self.y + i - self.x):
-                self.conflicts += 1
-            elif (board.queens[i].y == self.y - i - self.x):
-                self.conflicts += 1
+        self.conflicts = 0
+        for i in range(0, board.n):
+            if (not self is board.queens[i]):
+                print("I am queen " + str(self.x) + " checking queen " + str(i))
+                if (board.queens[i].y == self.y):
+                    
+                    self.conflicts += 1
+                elif (board.queens[i].y == self.y + i - self.x):
+                    self.conflicts += 1
                 
+                elif (board.queens[i].y == self.y - i - self.x):
+                    self.conflicts += 1
+                print("\t checking y == " + str(self.y))
+                print("\t checking y == " + str(self.y + i - self.x))
+                print("\t checking y == " + str(self.y - i + self.x))
+
+##        for i in range(self.x - 1, -1, -1):
+##            print("I am queen " + str(self.x) + " checking queen " + str(i))
+##            if (board.queens[i].y == self.y):
+##                self.conflicts += 1
+##            
+##            elif (board.queens[i].y == self.y + i - self.x):
+##                self.conflicts += 1
+##            elif (board.queens[i].y == self.y - i + self.x):
+##                self.conflicts += 1
+##            print("\t checking y == " + str(self.y))
+##            print("\t checking y == " + str(self.y + i - self.x))
+##            print("\t checking y == " + str(self.y - i - self.x))
+##                
         if (self.conflicts != 0 and not board.conflicts.count(self)):
             board.conflicts.append(self)
         elif (self.conflicts == 0 and board.conflicts.count(self)):
