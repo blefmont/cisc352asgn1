@@ -19,29 +19,12 @@ class Queen():
     ##      with any others. Update number and either
     ##      add or remove self to board.conflicts
     def checkConflicts(self, board):
-        self.conflicts = 0
-        for i in range(0, board.n):
-            if (not self is board.queens[i]):
-##                print("I am queen " + str(self.x) + " checking queen " + str(i))
-##                t = self.conflicts
-                if (board.queens[i].y == self.y):
-                    self.conflicts += 1
-                    
-                elif (board.queens[i].y == self.y + i - self.x):
-                    self.conflicts += 1
-                
-                elif (board.queens[i].y == self.y - i + self.x):
-                    self.conflicts += 1
-                    
-##                print("\t checking y == " + str(self.y))
-##                print("\t checking y == " + str(self.y + i - self.x))
-##                print("\t checking y == " + str(self.y - i + self.x))
-##                if (t < self.conflicts): print("Found conflict")
+        self.conflicts = board.rowConflicts[self.y] + board.rightDiag[self.y + self.x] + board.leftDiag[board.n + self.y - self.x - 1] - 3
 
-            if (self.conflicts != 0 and not board.conflicts.count(self)):
-                board.conflicts.append(self)
-            elif (self.conflicts == 0 and board.conflicts.count(self)):
-                board.conflicts.remove(self)
+        if (self.conflicts != 0 and not board.conflicts.count(self)):
+            board.conflicts.append(self)
+        elif (self.conflicts == 0 and board.conflicts.count(self)):
+            board.conflicts.remove(self)
     
 ## This is the chess board. The chess board should manage
 ##      the queens, and keep track of positons and conflicts
@@ -57,8 +40,8 @@ class Board():
         ## List of queens that currently have at least one conflict
         self.conflicts = []
         self.rowConflicts = [0] * n
-        self.leftDiag = [0] * 2 * n - 1
-        self.rightDiag = [0] * 2 * n - 1
+        self.leftDiag = [0] * ((2 * n) - 1)
+        self.rightDiag = [0] * ((2 * n) - 1)
 
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
@@ -68,7 +51,7 @@ class Board():
             self.queens[i].y = random.randint(0,self.n-1)
             self.rowConflicts[self.queens[i].y] += 1
             self.leftDiag[self.n + self.queens[i].y - i - 1] += 1
-            self.rightDiag[self.queens[i].y + i]
+            self.rightDiag[self.queens[i].y + i] += 1
     ## Go through the list of queens, checking
     ##      how many conflicts there are. Should
     ##      also update self.conflicts
@@ -100,14 +83,25 @@ def convertBoard(board):
 
 def findLeastconflicts(csp, queen):
     yPos = queen.y
+    
+    csp.rowConflicts[yPos] -=1
+    csp.leftDiag[csp.n + yPos - queen.x - 1] -=1
+    csp.rightDiag[yPos + queen.x] -=1
+    
     numConflicts = queen.conflicts
     bestPos = 0
+    
     for i in range(csp.n):
         queen.y = i
         queen.checkConflicts(csp)
         if (queen.conflicts < numConflicts):
             numConflicts = queen.conflicts
             bestPos = i
+
+    csp.rowConflicts[bestPos] +=1
+    csp.leftDiag[csp.n + bestPos - queen.x - 1] +=1
+    csp.rightDiag[bestPos + queen.x] +=1
+    
     return bestPos
 
 ## Should read in "nqueens.txt" and return list of problems to solve
@@ -124,9 +118,9 @@ def outputFile(fileName, solutions):
 ##    file.close()
 
 def runAlgorithm(n):
-    csp = Board(n)
     solution = None
     while(solution == None):
+        csp = Board(n)
         csp.randomizeQueens()
         solution = minConflicts(csp, 75)
     print(solution)
