@@ -51,12 +51,14 @@ class Board():
         ## 2D matrix of 0 if no queen and instance in queen's position
         ## List of queen instances.
         self.queens = []
-        
         for i in range(n):
             self.queens.append(Queen())
         
         ## List of queens that currently have at least one conflict
         self.conflicts = []
+        self.rowConflicts = [0] * n
+        self.leftDiag = [0] * 2 * n - 1
+        self.rightDiag = [0] * 2 * n - 1
 
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
@@ -64,7 +66,9 @@ class Board():
         for i in range(len(self.queens)):
             self.queens[i].x = i
             self.queens[i].y = random.randint(0,self.n-1)
-        
+            self.rowConflicts[self.queens[i].y] += 1
+            self.leftDiag[self.n + self.queens[i].y - i - 1] += 1
+            self.rightDiag[self.queens[i].y + i]
     ## Go through the list of queens, checking
     ##      how many conflicts there are. Should
     ##      also update self.conflicts
