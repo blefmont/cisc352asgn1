@@ -22,36 +22,26 @@ class Queen():
         self.conflicts = 0
         for i in range(0, board.n):
             if (not self is board.queens[i]):
-                print("I am queen " + str(self.x) + " checking queen " + str(i))
+##                print("I am queen " + str(self.x) + " checking queen " + str(i))
+##                t = self.conflicts
                 if (board.queens[i].y == self.y):
-                    
                     self.conflicts += 1
+                    
                 elif (board.queens[i].y == self.y + i - self.x):
                     self.conflicts += 1
                 
-                elif (board.queens[i].y == self.y - i - self.x):
+                elif (board.queens[i].y == self.y - i + self.x):
                     self.conflicts += 1
-                print("\t checking y == " + str(self.y))
-                print("\t checking y == " + str(self.y + i - self.x))
-                print("\t checking y == " + str(self.y - i + self.x))
+                    
+##                print("\t checking y == " + str(self.y))
+##                print("\t checking y == " + str(self.y + i - self.x))
+##                print("\t checking y == " + str(self.y - i + self.x))
+##                if (t < self.conflicts): print("Found conflict")
 
-##        for i in range(self.x - 1, -1, -1):
-##            print("I am queen " + str(self.x) + " checking queen " + str(i))
-##            if (board.queens[i].y == self.y):
-##                self.conflicts += 1
-##            
-##            elif (board.queens[i].y == self.y + i - self.x):
-##                self.conflicts += 1
-##            elif (board.queens[i].y == self.y - i + self.x):
-##                self.conflicts += 1
-##            print("\t checking y == " + str(self.y))
-##            print("\t checking y == " + str(self.y + i - self.x))
-##            print("\t checking y == " + str(self.y - i - self.x))
-##                
-        if (self.conflicts != 0 and not board.conflicts.count(self)):
-            board.conflicts.append(self)
-        elif (self.conflicts == 0 and board.conflicts.count(self)):
-            board.conflicts.remove(self)
+            if (self.conflicts != 0 and not board.conflicts.count(self)):
+                board.conflicts.append(self)
+            elif (self.conflicts == 0 and board.conflicts.count(self)):
+                board.conflicts.remove(self)
     
 ## This is the chess board. The chess board should manage
 ##      the queens, and keep track of positons and conflicts
@@ -79,7 +69,6 @@ class Board():
     ##      how many conflicts there are. Should
     ##      also update self.conflicts
     def checkSolution(self):
-        print(len(self.conflicts))
         for q in self.queens:
             q.checkConflicts(self)
         if (self.conflicts == []):
@@ -88,9 +77,7 @@ class Board():
 ## Main min conflicts algoritm, see assignment for algorithm.
 ##      return solution, or None if no solution is found.
 def minConflicts(csp, maxSteps):
-    print ("start minconflicts")
     for i in range(maxSteps):
-        print (convertBoard(csp))
         if (csp.checkSolution()):
             return convertBoard(csp)
         var = csp.conflicts[random.randint(0, len(csp.conflicts)-1)]
@@ -135,20 +122,19 @@ def outputFile(fileName, solutions):
 def runAlgorithm(n):
     csp = Board(n)
     solution = None
-    i = 0 #### debug
     while(solution == None):
-        print (i) ### debug
         csp.randomizeQueens()
         solution = minConflicts(csp, 75)
+    print(solution)
 
-#### problems is the list of n size solutions we must find
-##problems = []
-#### solutions is a list of lists, where each element is
-####      a matrix of positons as shown in assignment
-##solutions = []
-##
-##problems = inputFile("nqueens.txt")
-##for i in problems:
-##    solutions.append(runAlgorithm(i))
-##outputFile("nqueens_output.txt", solutions)
+## problems is the list of n size solutions we must find
+problems = []
+## solutions is a list of lists, where each element is
+##      a matrix of positons as shown in assignment
+solutions = []
+
+problems = inputFile("nqueens.txt")
+for i in problems:
+    solutions.append(runAlgorithm(i))
+outputFile("nqueens_output.txt", solutions)
 

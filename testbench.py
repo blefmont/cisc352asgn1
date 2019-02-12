@@ -12,6 +12,8 @@ def pc(csp):
     for i in csp.queens:
         print("Queen " + str(i.x) + ": " + str(i.conflicts))
         
-c = Board(4)
+c = Board(8)
 c.randomizeQueens()
+pb(c)
 c.checkSolution()
+pc(c)
