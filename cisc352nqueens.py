@@ -7,6 +7,9 @@ Michael Olson    20008033
 Brandon Christof 20014247
 """
 import random
+import math
+import time
+from math import trunc
   
 ## This is the chess board. The chess board should manage
 ##      the queens, and keep track of positons and conflicts
@@ -26,10 +29,15 @@ class Board():
     ## If self.queens is empty, create queens
     ## randomize the postions, with one queen per row
     
-    def setQueens(self):
+    def setQueens(self, differentOrder):
 
         col = list(range(self.n))
         notSet = []
+
+        # If last order didn't work within step count, try this order
+        if differentOrder:
+            f = col.pop(0)
+            col.append(f)
         
         for i in range(self.n):
             ql = len(self.queens)
@@ -79,8 +87,7 @@ def minConflicts(csp, maxSteps):
             return csp.queens
 
         findLeastconflicts(csp, m)
-
-    return None   
+    return -1   
 
 ## Should convert an instance of Board to a list of queen positions
 ## ex. return [2,0,1,4]
@@ -134,15 +141,21 @@ def outputFile(fileName, solutions):
     with open(fileName, 'w') as f:
         for item in solutions:
             f.write("%s\n" % item)
+    f.close()
         
 
 def runAlgorithm(n):
-    solution = None
-    while(solution == None):
+    if n > 2000000:
+        print("Too large of n")
+        exit(0)
+    csp = Board(n)
+    csp.setQueens(False)
+    trials = 60
+    while minConflicts(csp, trials) == -1:
         csp = Board(n)
-        csp.setQueens()
-        solution = minConflicts(csp, 75)
-    return solution
+        csp.setQueens(True)
+        trials = n*2
+    return csp.queens
 
 ## problems is the list of n size solutions we must find
 problems = []
@@ -151,9 +164,15 @@ problems = []
 solutions = []
 
 problems = inputFile("nqueens.txt")
-input("Start:")
+input("Press Enter to start:")
+time0 = time.time()
 for i in problems:
     solutions.append(runAlgorithm(i))
+    
+time1 = time.time()
+tot_time = time1 - time0
+time_string = str(trunc(tot_time*100)/100)
+print("\n   Took " + time_string + " seconds\n")
 print("Done")
 outputFile("nqueens_output.txt", solutions)
 
