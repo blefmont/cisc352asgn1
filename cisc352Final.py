@@ -146,18 +146,14 @@ def outputFile(fileName, solutions):
 ## Returns queens list when solved
 def runAlgorithm(n):
     
-    if n > 2000000:
-        print("Too large of n")
-        exit(0)
-        
     csp = Board(n)
-    csp.setQueens(False)
-    trials = 60
+    csp.setQueens(True)
+    trials = 65
     
     while minConflicts(csp, trials) == -1:
         csp = Board(n)
-        csp.setQueens(True)
-        trials = n*2
+        csp.setQueens(False)
+        trials = n
     return csp.queens
 
 problems = []       # List of n sized problems
