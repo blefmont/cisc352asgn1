@@ -131,10 +131,10 @@ def inputFile(fileName):
 
 ## Outputs found solutions to "nqueens_out.txt"
 def outputFile(fileName, solutions):
-    print (solutions)
-##    file = open(fileName, 'w')
-##    file.writelines(solutions)
-##    file.close()
+    with open(fileName, 'w') as f:
+        for item in solutions:
+            f.write("%s\n" % item)
+        
 
 def runAlgorithm(n):
     solution = None
@@ -154,7 +154,6 @@ problems = inputFile("nqueens.txt")
 input("Start:")
 for i in problems:
     solutions.append(runAlgorithm(i))
-print(solutions)
 print("Done")
-#outputFile("nqueens_output.txt", solutions)
+outputFile("nqueens_output.txt", solutions)
 
