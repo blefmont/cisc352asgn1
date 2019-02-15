@@ -6,8 +6,6 @@
     Authors:
         Brandon Christof 20014247
         Michael Olson    20008033
-        Niyousha Saeidi  20009546
-        Jiaao Chen       20004410
 '''
 import random
 import math
