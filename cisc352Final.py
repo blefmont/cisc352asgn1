@@ -51,7 +51,7 @@ class Board():
         # Loop to place queens, all at positions with 0 conflicts
         for i in range(self.n):
             ql = len(self.queens)
-            test = col.pop(0)
+            test = col[i]
             columnConflict = self.rowConflicts[test] + self.rightDiag[ql + test] + self.leftDiag[self.n + test - ql - 1]
             if columnConflict == 0:
                 self.queens.append(test)
