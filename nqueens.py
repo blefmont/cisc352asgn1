@@ -136,7 +136,7 @@ def inputFile(fileName):
 def outputFile(fileName, solutions):
     with open(fileName, 'w') as f:
         for item in solutions:
-            f.write("%s\n" % item)
+            f.write("%s\n" % [x+1 for x in item])
     f.close()
         
 

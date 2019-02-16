@@ -26,11 +26,12 @@ def confirmSolution(s):
 
 
 
-##with open("nqueens.txt", 'w+') as f:
-##    f.writelines([])
+with open("nqueens_output.txt", 'r') as f:
+    a = f.read()
 
-from cisc352Final import *
+from nqueens import *
 import timeit
+
 
 
 ##for i in range (4, 1500):
@@ -42,8 +43,8 @@ import timeit
 
 
 
-for i in range(4,1000000, 9363):
-    print(timeit.timeit("runAlgorithm("+str(i)+")",
-                        "from cisc352Final import runAlgorithm", number = 1))
-    
-                
+##for i in range(4,1000000, 9363):
+##    print(timeit.timeit("runAlgorithm("+str(i)+")",
+##                        "from cisc352Final import runAlgorithm", number = 1))
+##    
+##                
