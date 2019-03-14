@@ -3,14 +3,15 @@
 
 ## documentation
 class Node():
-    def _init__(self, isMaxNode, isRootNode, isLeafNode, value = None):
-        self.isMax = isMaxNode
-        self.isMin = not isMaxNode
-        self.isLeaf = isLeafNode
-        self.isRoot = isRootNode
-        self.value = value
-        if (isLeafNode and value == None):
-            raise ValueError("If is a leaf node, value must be provided")
+    def __init__(self, maxOrMin, isRoot = False):
+        if (maxOrMin == "MAX"):
+            self.isMax = True
+        elif (maxOrMin == "MIN"):
+            self.isMax = False
+        else: raise ValueError('maxOrMin must be "MAX" or "MIN"')
+        self.isLeaf = False
+        self.isRoot = isRoot
+        self.value = None
         self.children = []
     ## documentation
     def is_root_node(self):
@@ -20,7 +21,7 @@ class Node():
         return self.isLeaf
     ## documentation
     def is_min_node(self):
-        return self.isMin
+        return (not self.isMax)
     ## documentation
     def is_max_node(self):
         return self.isMax
@@ -32,7 +33,10 @@ class Node():
             print("Leaves can not have children")
         else:
             self.children.append(node)
-            
+    ## documentation
+    def makeLeaf(self, value):
+        self.isLeaf = True
+        self.value = value
     ## documentation
     def get_children(self):
         return children
@@ -62,13 +66,33 @@ def alpha_beta(current_node, alpha, beta):
 
 
 ## documentation
-def input(filename):
+def inputData(fileName):
     with open(fileName) as f:
         content = f.read()
     return content
 ## documentation
-def output():
+def outputData():
     pass
 ## documentation
 def parse_n_init():
-    pass
+    nodeRef = dict()
+    content = inputData("alphabeta.txt")
+    nodesListString, nodesDataString = content.split(' ')
+    
+    nodesList = nodesListString[2:-2].split('),(')
+    nodesList[0] = nodesList[0].split(',')
+    nodeRef[nodesList[0][0]] = Node(nodesList[0][1], True)
+    for i in range(1, len(nodesList)):
+        nodesList[i] = nodesList[i].split(',')
+        nodeRef[nodesList[i][0]] = Node(nodesList[i][1])
+
+    nodesData = nodesDataString[2:-2].split('),)')
+
+    for i in range(len(nodesData)):
+        nodesData[i] = nodesData[i].split(',')
+        if (nodesData[i][1].isalpha()):
+            nodeRef[nodesData[i][0]].addChild(nodeRef[nodesData[i][1]])
+        elif (nodesData[i][1].isnumeric()):
+            nodeRef[nodesData[i][0]].makeLeaf(int(nodeRef[nodesData[i][1]]))
+    print(nodeRef)
+        
