@@ -34,14 +34,16 @@ def alpha_beta(current_node, alpha, beta):
         return current_node.static_evaluation
     
     if current_node.is_max_node():
-        alpha = max(alpha, alpha_beta(current_node.get_children(), alpha, beta))
-        if alpha >= beta:
-            cut_off_search_below(current_node)
+        for a in current_node.get_children():
+            alpha = max(alpha, alpha_beta(a, alpha, beta))
+            if alpha >= beta:
+                break
 
     if current_node.is_min_node():
-        beta = min(beta, alpha_beta(current_node.get_children(), alpha, beta))
-        if beta <= alpha:
-            cut_off_search_below(current_node)
+        for b in current_node.get_children():
+            beta = min(beta, alpha_beta(b, alpha, beta))
+            if beta <= alpha:
+                break
 
 
 ## documentation
