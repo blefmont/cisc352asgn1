@@ -13,12 +13,13 @@ class Node():
         self.isRoot = isRoot
         self.value = None
         self.children = []
+
     ## documentation
     def is_root_node(self):
-        return self.isRoot
+        pass
     ## documentation
     def is_leaf(self):
-        return self.isLeaf
+        pass
     ## documentation
     def is_min_node(self):
         return (not self.isMax)
@@ -37,10 +38,10 @@ class Node():
     def makeLeaf(self, value):
         self.isLeaf = True
         self.value = value
+
     ## documentation
     def get_children(self):
-        return children
-    
+        pass
 ## documentation
 def cut_off_search_below(current_node):
     pass
@@ -55,14 +56,16 @@ def alpha_beta(current_node, alpha, beta):
         return current_node.static_evaluation
     
     if current_node.is_max_node():
-        alpha = max(alpha, alpha_beta(current_node.get_children(), alpha, beta))
-        if alpha >= beta:
-            cut_off_search_below(current_node)
+        for a in current_node.get_children():
+            alpha = max(alpha, alpha_beta(a, alpha, beta))
+            if alpha >= beta:
+                break
 
     if current_node.is_min_node():
-        beta = min(beta, alpha_beta(current_node.get_children(), alpha, beta))
-        if beta <= alpha:
-            cut_off_search_below(current_node)
+        for b in current_node.get_children():
+            beta = min(beta, alpha_beta(b, alpha, beta))
+            if beta <= alpha:
+                break
 
 
 ## documentation
@@ -70,6 +73,7 @@ def inputData(fileName):
     with open(fileName) as f:
         content = f.read()
     return content
+
 ## documentation
 def outputData():
     pass
