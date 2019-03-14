@@ -43,7 +43,24 @@ def cut_off_search_below(current_node):
 
 ## documentation
 def alpha_beta(current_node, alpha, beta):
-    pass
+    if current_node.is_root_node():
+        alpha = -999999999
+        beta = 999999999
+        
+    if current_node.is_leaf():
+        return current_node.static_evaluation
+    
+    if current_node.is_max_node():
+        alpha = max(alpha, alpha_beta(current_node.get_children(), alpha, beta))
+        if alpha >= beta:
+            cut_off_search_below(current_node)
+
+    if current_node.is_min_node():
+        beta = min(beta, alpha_beta(current_node.get_children(), alpha, beta))
+        if beta <= alpha:
+            cut_off_search_below(current_node)
+
+
 ## documentation
 def input(filename):
     with open(fileName) as f:
