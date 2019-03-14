@@ -1,5 +1,6 @@
 ## Alpha-Beta Pruning
 
+counter = []
 
 ## documentation
 class Node():
@@ -48,24 +49,29 @@ def cut_off_search_below(current_node):
 
 ## documentation
 def alpha_beta(current_node, alpha, beta):
+    global counter
+    
     if current_node.is_root_node():
         alpha = -999999999
         beta = 999999999
         
     if current_node.is_leaf():
-        return current_node.static_evaluation
+        print(current_node.value)
+        return current_node.value
     
     if current_node.is_max_node():
         for a in current_node.get_children():
             alpha = max(alpha, alpha_beta(a, alpha, beta))
             if alpha >= beta:
                 break
+        return alpha
 
     if current_node.is_min_node():
         for b in current_node.get_children():
             beta = min(beta, alpha_beta(b, alpha, beta))
             if beta <= alpha:
                 break
+        return beta
 
 
 ## documentation
@@ -115,6 +121,8 @@ def parse_n_init():
     return rootNode
         
 def main():
+    global counter
     root = parse_n_init()
-    alpha_beta(root, None, None)
+    print("Score:", alpha_beta(root, None, None))
+    print("Leafs Examined:", counter)
     
