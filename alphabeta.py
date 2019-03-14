@@ -16,10 +16,10 @@ class Node():
 
     ## documentation
     def is_root_node(self):
-        pass
+        return self.isRoot
     ## documentation
     def is_leaf(self):
-        pass
+        return self.isLeaf
     ## documentation
     def is_min_node(self):
         return (not self.isMax)
@@ -41,7 +41,7 @@ class Node():
 
     ## documentation
     def get_children(self):
-        pass
+        return self.children
 ## documentation
 def cut_off_search_below(current_node):
     pass
@@ -77,26 +77,44 @@ def inputData(fileName):
 ## documentation
 def outputData():
     pass
-## documentation
+
+## Parse and init should grab the data from the input file, and then
+##      it create all the nodes and link them together.
+##  returns the root node
 def parse_n_init():
+    # Gets string data from file
     nodeRef = dict()
     content = inputData("alphabeta.txt")
+    # Sparates the two sections
     nodesListString, nodesDataString = content.split(' ')
-    
+
+    # Clean the first string partially, and separate into items
     nodesList = nodesListString[2:-2].split('),(')
+    # Init Root node
     nodesList[0] = nodesList[0].split(',')
     nodeRef[nodesList[0][0]] = Node(nodesList[0][1], True)
+    rootNode = nodeRef[nodesList[0][0]]
+
+    # init other nodes
     for i in range(1, len(nodesList)):
         nodesList[i] = nodesList[i].split(',')
         nodeRef[nodesList[i][0]] = Node(nodesList[i][1])
+        
+    # Clean data String
+    nodesData = nodesDataString[2:-2].split('),(')
 
-    nodesData = nodesDataString[2:-2].split('),)')
-
+    # Create children and values
     for i in range(len(nodesData)):
         nodesData[i] = nodesData[i].split(',')
+        # if is a letter than add child
         if (nodesData[i][1].isalpha()):
-            nodeRef[nodesData[i][0]].addChild(nodeRef[nodesData[i][1]])
+            nodeRef[nodesData[i][0]].add_child(nodeRef[nodesData[i][1]])
+        # otherwise make it a leaf and give it a value
         elif (nodesData[i][1].isnumeric()):
-            nodeRef[nodesData[i][0]].makeLeaf(int(nodeRef[nodesData[i][1]]))
-    print(nodeRef)
+            nodeRef[nodesData[i][0]].makeLeaf(int(nodesData[i][1]))
+    return rootNode
         
+def main():
+    root = parse_n_init()
+    alpha_beta(root, None, None)
+    
