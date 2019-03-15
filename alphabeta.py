@@ -1,4 +1,6 @@
 ## Alpha-Beta Pruning
+## Authors: Michael Olson    20008033
+##        : Brandon Christof 20014247
 
 ## Global counter variable, counts the leaf nodes examined
 counter = 0
@@ -47,17 +49,20 @@ class Leaf():
         return False
 
 
-## documentation
+## main Algorithm function
 def alpha_beta(current_node, alpha, beta):
     global counter
+    ## Check for root node, use 999999999 as infinity
     if current_node.is_root_node():
         alpha = -999999999
         beta = 999999999
-        
+
+    ## Check if the tree object is of type Leaf
     if type(current_node) == Leaf:
         counter += 1
         return current_node.value
-    
+
+    ## Use for loop for all children and use break as cut off search below
     if current_node.is_max_node():
         for a in current_node.get_children():
             alpha = max(alpha, alpha_beta(a, alpha, beta))
@@ -123,8 +128,10 @@ def parse_n_init(graphstring):
 ## Main function, ties all other functions together.
 def main():
     global counter
+    ## read input data
     content = inputData("alphabeta.txt")
     results = []
+    ## For every graph, parse string and run alpha_beta then collect results
     for i in range(len(content)):
         counter = 0
         root = parse_n_init(content[i])
