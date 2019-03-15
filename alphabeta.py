@@ -50,18 +50,16 @@ class Leaf():
 ## documentation
 def alpha_beta(current_node, alpha, beta):
     global counter
-    print("alpha_beta: Current node is " + current_node.key)
     if current_node.is_root_node():
         alpha = -999999999
         beta = 999999999
         
     if type(current_node) == Leaf:
-        counter.append(current_node.value)
+        counter += 1
         return current_node.value
     
     if current_node.is_max_node():
         for a in current_node.get_children():
-            print("Checking child: "+ a.key)
             alpha = max(alpha, alpha_beta(a, alpha, beta))
             if alpha >= beta:
                 break
@@ -69,7 +67,6 @@ def alpha_beta(current_node, alpha, beta):
 
     if current_node.is_min_node():
         for b in current_node.get_children():
-            print("Checking child: "+ b.key)
             beta = min(beta, alpha_beta(b, alpha, beta))
             if beta <= alpha:
                 break
@@ -79,22 +76,23 @@ def alpha_beta(current_node, alpha, beta):
 ## Deals with the file and returns content
 def inputData(fileName):
     with open(fileName) as f:
-        content = f.read()
+        content = f.readlines()
     return content
 
 ## documentation
-def outputData():
-    pass
+def outputData(results):
+    with open("alphabeta_out.txt", 'w') as f:
+        for line in results:
+            f.write(line)
+    f.close()
 
-## Parse and init should grab the data from the input file, and then
+## Parse and init should get the line that defines the graph, and then
 ##      it create all the nodes and link them together.
 ##  returns the root node
-def parse_n_init():
-    # Gets string data from file
+def parse_n_init(graphstring):
     nodeRef = dict()
-    content = inputData("alphabeta.txt")
     # Sparates the two sections
-    nodesListString, nodesDataString = content.split(' ')
+    nodesListString, nodesDataString = graphstring.split(' ')
 
     # Clean the first string partially, and separate into items
     nodesList = nodesListString[2:-2].split('),(')
@@ -122,11 +120,18 @@ def parse_n_init():
              nodeRef[nodesData[i][0]].add_child(Leaf(int(nodesData[i][1])))
     return rootNode
 
-##   
+## Main function, ties all other functions together.
 def main():
     global counter
-    root = parse_n_init()
-    score = alpha_beta(root, None, None))
-    outputData(
+    content = inputData("alphabeta.txt")
+    results = []
+    for i in range(len(content)):
+        counter = 0
+        root = parse_n_init(content[i])
+        score = alpha_beta(root, None, None)
+        resultString = "Graph " + str(i+1) + ": Score: " + str(score) + "; Leaf Nodes Examined: " + str(counter) + '\n'
+        results.append(resultString)
+        
+    outputData(results)
 
 main()
