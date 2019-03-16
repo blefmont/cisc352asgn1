@@ -1,6 +1,14 @@
-## Alpha-Beta Pruning
-## Authors: Michael Olson    20008033
-##        : Brandon Christof 20014247
+'''
+Alpha-Beta Pruning
+Authors: Michael Olson    20008033
+       : Brandon Christof 20014247
+
+    This program implements a minimax search algorithm that will determine
+    a score for any given state of a game. The search method uses Alpha-Beta
+    pruning to cut off any redudant searches to give a faster and
+    more efficient solution.
+
+'''
 
 ## Global counter variable, counts the leaf nodes examined
 counter = 0
@@ -49,7 +57,13 @@ class Leaf():
         return False
 
 
-## main Algorithm function
+## A recursive function that will search and return the highest/lowest
+## score possible starting at a given root node.
+## If at any point the value returned should be higher or lower than
+## what their parent node is going to compare with, the sub search is
+## immediately broken and returned. Since the child's lower/upper bound
+## is greater than/less than their parents, it wouldn't matter what other
+## choices their parent had.
 def alpha_beta(current_node, alpha, beta):
     global counter
     ## Check for root node, use 999999999 as infinity
@@ -84,7 +98,7 @@ def inputData(fileName):
         content = f.readlines()
     return content
 
-## documentation
+## Creates a new file with results
 def outputData(results):
     with open("alphabeta_out.txt", 'w') as f:
         for line in results:
